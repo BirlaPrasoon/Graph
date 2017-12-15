@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /** A class that implements a directed graph. 
  * The graph may have self-loops, parallel edges. 
@@ -95,8 +94,20 @@ public class GraphAdjList extends Graph {
 	 * @return List<Integer> a list of indices of vertices.  
 	 */		
 	 public List<Integer> getDistance2(int v) {
-		 // XXX: Implement this method in week 2
-		 return null;
+		 ArrayList<Integer> twoHopNeighbors = new ArrayList<>();
+		 ArrayList<Integer> neighbors = new ArrayList<>();
+		 
+		 //take indices of all the out-neighbors
+		for(int i = 0; i < numVertices; i++) {
+			neighbors.addAll(getNeighbors(i));
+		}
+		 
+		//indices of all of the out-neighbors of neighbors are
+		//two hop neighbors
+		for(Integer n:neighbors) {
+			twoHopNeighbors.addAll(getNeighbors(n));
+		}
+		 return twoHopNeighbors;
 	}
 	
 	/**
@@ -105,7 +116,7 @@ public class GraphAdjList extends Graph {
 	 */
 	public String adjacencyString() {
 		String s = "Adjacency list";
-		s += " (size " + getNumVertices() + "+" + getNumEdges() + " integers):";
+		s += " (size " + numVertices + "+" + numEdges + " integers):";
 
 		for (int v : adjListsMap.keySet()) {
 			s += "\n\t"+v+": ";
