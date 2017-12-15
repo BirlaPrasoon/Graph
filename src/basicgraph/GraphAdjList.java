@@ -97,16 +97,14 @@ public class GraphAdjList extends Graph {
 		 ArrayList<Integer> twoHopNeighbors = new ArrayList<>();
 		 ArrayList<Integer> neighbors = new ArrayList<>();
 		 
-		 //take indices of all the out-neighbors
-		for(int i = 0; i < numVertices; i++) {
-			neighbors.addAll(getNeighbors(i));
-		}
+		 //get all neighbors
+		 neighbors.addAll(getNeighbors(v));
 		 
-		//indices of all of the out-neighbors of neighbors are
-		//two hop neighbors
-		for(Integer n:neighbors) {
-			twoHopNeighbors.addAll(getNeighbors(n));
-		}
+		 //indices of all of the out-neighbors of neighbors are
+		 //two hop neighbors
+		 for(Integer n:neighbors) 
+		   	twoHopNeighbors.addAll(getNeighbors(n));
+		 
 		 return twoHopNeighbors;
 	}
 	
