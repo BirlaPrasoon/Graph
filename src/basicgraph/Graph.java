@@ -2,6 +2,7 @@ package basicgraph;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,7 @@ public abstract class Graph {
 	 * Get all (out-)neighbors of a given vertex.
 	 * @param v Index of vertex in question.
 	 * @return List of indices of all vertices that are adjacent to v
-	 * 	via outgoing edges from v. 
+	 * 	via outgoing edges from v.
 	 */
 	public abstract List<Integer> getNeighbors(int v); 
 	
@@ -121,14 +122,21 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 2
-		return null;
+		
+		ArrayList<Integer> degreeSequence = new ArrayList<>();
+		for(int i=0; i < numVertices; i++) {
+			degreeSequence.add(getNeighbors(i).size() + getInNeighbors(i).size());
+		}
+		
+		Collections.sort(degreeSequence);
+		
+		return degreeSequence;
 	}
 	
 	/**
 	 * Get all the vertices that are 2 away from the vertex in question.
 	 * @param v The starting vertex
-	 * @return A list of the vertices that can be reached in exactly two hops (by 
+	 * @return A list of the vertices that can be reached in exactly two hops (by
 	 * following two edges) from vertex v.
 	 * XXX: Implement in part 2 of week 2 for each subclass of Graph
 	 */
@@ -179,7 +187,7 @@ public abstract class Graph {
 	 * @return True if there's a vertex in the graph with this label; false otherwise.
 	 */
 	public boolean hasVertex(String s)
-	{
+	{ 
 		return vertexLabels.containsValue(s);
 	}
 	
@@ -190,12 +198,9 @@ public abstract class Graph {
 	 */
 	public void addLabel(int v, String s) {
 		if (v < getNumVertices() && !vertexLabels.containsKey(v)) 
-		{
 			vertexLabels.put(v, s);
-		}
-		else {
+		else
 			System.out.println("ERROR: tried to label a vertex that is out of range or already labeled");
-		}
 	}
 	
 	/**
@@ -224,15 +229,28 @@ public abstract class Graph {
 		System.out.println("ERROR: No vertex with this label");
 		return -1;
 	}
+		
 	
-
 	
 	/** Main method provided with some basic tests.  */
+	@SuppressWarnings("unchecked")
 	public static void main (String[] args) {
-		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
+		/*GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");*/
 		
 
-		// For testing of Part 1 functionality
+		ArrayList<Integer> a = new ArrayList<>();
+		a.add(1); 
+		a.add(0);
+		a.add(11);
+		a.add(6);
+		a.add(3);
+		System.out.println("Unsorted Array: "+a);
+		utilComparator u = new utilComparator();
+		//Collections.sort(a, u);
+		a.sort(new utilComparator());
+		System.out.println("Sorted Array: " +a);
+		
+		/*// For testing of Part 1 functionality
 		// Add your tests here to make sure your degreeSequence method is returning
 		// the correct list, after examining the graphs.
 		System.out.println("Loading graphs based on real data...");
@@ -263,7 +281,19 @@ public abstract class Graph {
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
 
-
+*/
 		
+	}
+}
+
+class utilComparator implements Comparator{
+	
+	@Override
+	public int compare(Object obj1, Object obj2) {
+		
+		Integer i1 = (Integer)obj1;
+		Integer i2 = (Integer)obj2;
+		
+		return  i1 > i2? 1 : -1;
 	}
 }
