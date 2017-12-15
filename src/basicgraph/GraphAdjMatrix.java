@@ -34,6 +34,7 @@ public class GraphAdjMatrix extends Graph {
 	public void implementAddVertex() {
 		int v = getNumVertices();
 		if (v >= adjMatrix.length) {
+			//make a new matrix and copy old
 			int[][] newAdjMatrix = new int[v*2][v*2];
 			for (int i = 0; i < adjMatrix.length; i ++) {
 				for (int j = 0; j < adjMatrix.length; j ++) {
@@ -63,7 +64,7 @@ public class GraphAdjMatrix extends Graph {
 	 * appears once in the list for each of these edges.
 	 * 
 	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
+	 * @return List<Integer> a list of indices of vertices.\\\\\\\\\\\\\\
 	 */	
 	public List<Integer> getNeighbors(int v) {
 		List<Integer> neighbors = new ArrayList<Integer>();
@@ -100,12 +101,22 @@ public class GraphAdjMatrix extends Graph {
 	 * vertices reachable by two hops from v.
 	 * Use matrix multiplication to record length 2 paths.
 	 * 
+	 * Tested in GraphGrader
+	 * 
 	 * @param v the index of vertex.
 	 * @return List<Integer> a list of indices of vertices.  
 	 */	
 	public List<Integer> getDistance2(int v) {
-		// XXX Implement this method in week 2
-		return null;
+		
+		ArrayList<Integer> twoHopNeighbors = new ArrayList<Integer>();
+		
+		//traverse all of the out-neighbors of given vertex
+		//and collect all of the out-neighbors of the out-neighbors
+		for(Integer n:getNeighbors(v)) {
+			twoHopNeighbors.addAll(getNeighbors(n));
+		}
+		
+		return twoHopNeighbors;
 	}
 	
 	/**

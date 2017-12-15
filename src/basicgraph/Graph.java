@@ -6,8 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import util.GraphLoader;
 
@@ -24,8 +22,8 @@ import util.GraphLoader;
 
 public abstract class Graph {
 
-	private int numVertices;
-	private int numEdges;
+	protected int numVertices;
+	protected int numEdges;
 	//optional association of String labels to vertices 
 	private Map<Integer,String> vertexLabels;
 	
@@ -108,7 +106,7 @@ public abstract class Graph {
 	 * Get all in-neighbors of a given vertex.
 	 * @param v Index of vertex in question.
 	 * @return List of indices of all vertices that are adjacent to v
-	 * 	via incoming edges to v. 
+	 * 	via incoming edges to v.
 	 */
 	public abstract List<Integer> getInNeighbors(int v);
 	
@@ -128,7 +126,7 @@ public abstract class Graph {
 			degreeSequence.add(getNeighbors(i).size() + getInNeighbors(i).size());
 		}
 		
-		Collections.sort(degreeSequence);
+		Collections.sort(degreeSequence, new utilComp());
 		
 		return degreeSequence;
 	}
@@ -235,10 +233,10 @@ public abstract class Graph {
 	/** Main method provided with some basic tests.  */
 	@SuppressWarnings("unchecked")
 	public static void main (String[] args) {
-		/*GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");*/
+		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
 		
 
-		ArrayList<Integer> a = new ArrayList<>();
+		/*ArrayList<Integer> a = new ArrayList<>();
 		a.add(1); 
 		a.add(0);
 		a.add(11);
@@ -248,9 +246,9 @@ public abstract class Graph {
 		utilComparator u = new utilComparator();
 		//Collections.sort(a, u);
 		a.sort(new utilComparator());
-		System.out.println("Sorted Array: " +a);
+		System.out.println("Sorted Array: " +a);*/
 		
-		/*// For testing of Part 1 functionality
+		// For testing of Part 1 functionality
 		// Add your tests here to make sure your degreeSequence method is returning
 		// the correct list, after examining the graphs.
 		System.out.println("Loading graphs based on real data...");
@@ -270,30 +268,49 @@ public abstract class Graph {
 		// You can test with real road data here.  Use the data files in data/maps
 		
 		System.out.println("Flight data:");
-		GraphAdjList airportGraph = new GraphAdjList();
+		double initialTime = System.currentTimeMillis()*1000;
+		System.out.println("-------AdjacencyMatrix Edge relation: Flight Data--------");
+		GraphAdjMatrix airportGraph = new GraphAdjMatrix();
 		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
 		System.out.println(airportGraph);
+		System.out.println("Size of degreeSequence: "+ airportGraph.degreeSequence().size());
 		System.out.println("Observe most degrees are small (1-30), eight are over 100.");
 		System.out.println("****");
-		
+		double finalTime = System.currentTimeMillis()*1000;
+		System.out.println("Adjecency Matrix Time: " + (finalTime - initialTime));
 		//For testing Part 2 functionality
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
-
-*/
+		
+		initialTime = System.currentTimeMillis()*1000;
+		System.out.println("\n-------AdjacencyList Edge relation: Flight Data--------");
+		GraphAdjMatrix airportGraphAdjList = new GraphAdjMatrix();
+		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraphAdjList);
+		System.out.println(airportGraphAdjList);
+		System.out.println("Size of degreeSequence: "+ airportGraphAdjList.degreeSequence().size());
+		System.out.println("Observe most degrees are small (1-30), eight are over 100.");
+		System.out.println("****");
+		finalTime = System.currentTimeMillis()*1000;
+		System.out.println("Adjecency List Time: " + (finalTime - initialTime));
+		//For testing Part 2 functionality
+		// Test your distance2 code here.
+		System.out.println("Testing distance-two methods on sample graphs...");
+		System.out.println("Goal: implement method using two approaches.");
 		
 	}
 }
 
-class utilComparator implements Comparator{
-	
+class utilComp implements Comparator<Integer>{
+
 	@Override
-	public int compare(Object obj1, Object obj2) {
-		
-		Integer i1 = (Integer)obj1;
-		Integer i2 = (Integer)obj2;
-		
-		return  i1 > i2? 1 : -1;
+	public int compare(Integer o1, Integer o2) {
+		if(o1.equals(o2))
+			return 0;
+		if(o1<o2)
+			return 1;
+		else
+			return -1;
 	}
+	
 }

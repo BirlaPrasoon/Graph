@@ -90,6 +90,8 @@ public class GraphAdjList extends Graph {
 	 * Implement the abstract method for finding all 
 	 * vertices reachable by two hops from v.
 	 * 
+	 * Tested in Graph Grader
+	 * 
 	 * @param v the index of vertex.
 	 * @return List<Integer> a list of indices of vertices.  
 	 */		
